@@ -27,6 +27,10 @@
         .container {
             margin-bottom: 20px;
         }
+        .alert {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -52,6 +56,9 @@
         <button onclick="adicionarMovimento()">Adicionar Movimento</button>
     </div>
 
+    <!-- Mensagem de Erro -->
+    <p id="alerta" class="alert"></p>
+
     <!-- Tabela de Registros -->
     <h2>Histórico de Movimentos</h2>
     <table id="tabelaMovimentos">
@@ -60,43 +67,3 @@
                 <th>Nome da Peça</th>
                 <th>Quantidade</th>
                 <th>Tipo de Movimento</th>
-                <th>Data</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Os dados serão inseridos aqui -->
-        </tbody>
-    </table>
-
-    <script>
-        // Função para adicionar o movimento na tabela
-        function adicionarMovimento() {
-            const nomePeca = document.getElementById('nomePeca').value;
-            const quantidade = document.getElementById('quantidade').value;
-            const tipoMovimento = document.getElementById('tipoMovimento').value;
-            const data = document.getElementById('data').value;
-
-            // Verifica se todos os campos foram preenchidos
-            if (nomePeca && quantidade && tipoMovimento && data) {
-                // Cria uma nova linha na tabela
-                const tabela = document.getElementById('tabelaMovimentos').getElementsByTagName('tbody')[0];
-                const novaLinha = tabela.insertRow();
-
-                // Insere os dados nas células da nova linha
-                novaLinha.insertCell(0).textContent = nomePeca;
-                novaLinha.insertCell(1).textContent = quantidade;
-                novaLinha.insertCell(2).textContent = tipoMovimento === 'entrada' ? 'Entrada' : 'Saída';
-                novaLinha.insertCell(3).textContent = data;
-
-                // Limpa os campos após adicionar o movimento
-                document.getElementById('nomePeca').value = '';
-                document.getElementById('quantidade').value = '';
-                document.getElementById('tipoMovimento').value = 'entrada';
-                document.getElementById('data').value = '';
-            } else {
-                alert('Por favor, preencha todos os campos!');
-            }
-        }
-    </script>
-</body>
-</html>
