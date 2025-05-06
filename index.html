@@ -67,3 +67,96 @@
                 <th>Nome da Peça</th>
                 <th>Quantidade</th>
                 <th>Tipo de Movimento</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <!-- Tabela de Estoque -->
+    <h2>Estoque Atual</h2>
+    <table id="tabelaEstoque">
+        <thead>
+            <tr>
+                <th>Nome da Peça</th>
+                <th>Quantidade em Estoque</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- O estoque será exibido aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        // Objeto para controlar o estoque
+        let estoque = {};
+
+        // Função para atualizar a tabela de estoque
+        function atualizarEstoque() {
+            const tabelaEstoque = document.getElementById('tabelaEstoque').getElementsByTagName('tbody')[0];
+            tabelaEstoque.innerHTML = '';  // Limpa a tabela antes de preencher
+            for (let nomePeca in estoque) {
+                const row = tabelaEstoque.insertRow();
+                row.insertCell(0).textContent = nomePeca;
+                row.insertCell(1).textContent = estoque[nomePeca];
+            }
+        }
+
+        // Função para adicionar um movimento (entrada ou saída)
+        function adicionarMovimento() {
+            const nomePeca = document.getElementById('nomePeca').value.trim();
+            const quantidade = parseInt(document.getElementById('quantidade').value);
+            const tipoMovimento = document.getElementById('tipoMovimento').value;
+            const data = document.getElementById('data').value;
+
+            // Verifica se todos os campos foram preenchidos corretamente
+            if (!nomePeca || !quantidade || !data) {
+                document.getElementById('alerta').textContent = 'Por favor, preencha todos os campos!';
+                return;
+            }
+
+            // Verifica se a quantidade é válida
+            if (quantidade <= 0) {
+                document.getElementById('alerta').textContent = 'A quantidade deve ser maior que zero!';
+                return;
+            }
+
+            // Se for uma entrada de peças
+            if (tipoMovimento === 'entrada') {
+                if (!estoque[nomePeca]) {
+                    estoque[nomePeca] = 0;  // Se não existe a peça, inicia com quantidade 0
+                }
+                estoque[nomePeca] += quantidade;
+            }
+            // Se for uma saída de peças
+            else if (tipoMovimento === 'saida') {
+                if (!estoque[nomePeca] || estoque[nomePeca] < quantidade) {
+                    document.getElementById('alerta').textContent = 'Não há peças suficientes em estoque para essa saída!';
+                    return;
+                }
+                estoque[nomePeca] -= quantidade;
+            }
+
+            // Adiciona o movimento à tabela de histórico
+            const tabela = document.getElementById('tabelaMovimentos').getElementsByTagName('tbody')[0];
+            const novaLinha = tabela.insertRow();
+            novaLinha.insertCell(0).textContent = nomePeca;
+            novaLinha.insertCell(1).textContent = quantidade;
+            novaLinha.insertCell(2).textContent = tipoMovimento === 'entrada' ? 'Entrada' : 'Saída';
+            novaLinha.insertCell(3).textContent = data;
+
+            // Limpa os campos após adicionar o movimento
+            document.getElementById('nomePeca').value = '';
+            document.getElementById('quantidade').value = '';
+            document.getElementById('tipoMovimento').value = 'entrada';
+            document.getElementById('data').value = '';
+            document.getElementById('alerta').textContent = '';
+
+            // Atualiza a tabela de estoque
+            atualizarEstoque();
+        }
+    </script>
+</body>
+</html>
