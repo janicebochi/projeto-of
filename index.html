@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Entrada e Saída de Peças</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Controle de Entrada e Saída de Peças</h1>
+
+    <!-- Formulário de Entrada e Saída -->
+    <div class="container">
+        <label for="nomePeca">Nome da Peça:</label>
+        <input type="text" id="nomePeca" placeholder="Nome da Peça" required>
+
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" id="quantidade" placeholder="Quantidade" required>
+
+        <label for="tipoMovimento">Tipo de Movimento:</label>
+        <select id="tipoMovimento">
+            <option value="entrada">Entrada</option>
+            <option value="saida">Saída</option>
+        </select>
+
+        <label for="data">Data:</label>
+        <input type="date" id="data" required>
+
+        <button onclick="adicionarMovimento()">Adicionar Movimento</button>
+    </div>
+
+    <!-- Tabela de Registros -->
+    <h2>Histórico de Movimentos</h2>
+    <table id="tabelaMovimentos">
+        <thead>
+            <tr>
+                <th>Nome da Peça</th>
+                <th>Quantidade</th>
+                <th>Tipo de Movimento</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        // Função para adicionar o movimento na tabela
+        function adicionarMovimento() {
+            const nomePeca = document.getElementById('nomePeca').value;
+            const quantidade = document.getElementById('quantidade').value;
+            const tipoMovimento = document.getElementById('tipoMovimento').value;
+            const data = document.getElementById('data').value;
+
+            // Verifica se todos os campos foram preenchidos
+            if (nomePeca && quantidade && tipoMovimento && data) {
+                // Cria uma nova linha na tabela
+                const tabela = document.getElementById('tabelaMovimentos').getElementsByTagName('tbody')[0];
+                const novaLinha = tabela.insertRow();
+
+                // Insere os dados nas células da nova linha
+                novaLinha.insertCell(0).textContent = nomePeca;
+                novaLinha.insertCell(1).textContent = quantidade;
+                novaLinha.insertCell(2).textContent = tipoMovimento === 'entrada' ? 'Entrada' : 'Saída';
+                novaLinha.insertCell(3).textContent = data;
+
+                // Limpa os campos após adicionar o movimento
+                document.getElementById('nomePeca').value = '';
+                document.getElementById('quantidade').value = '';
+                document.getElementById('tipoMovimento').value = 'entrada';
+                document.getElementById('data').value = '';
+            } else {
+                alert('Por favor, preencha todos os campos!');
+            }
+        }
+    </script>
+</body>
+</html>
